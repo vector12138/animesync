@@ -12,4 +12,4 @@ venv/
 *.swp
 *.swo
 __pycache__
-.env
+.envserver/logs/
