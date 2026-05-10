@@ -6,12 +6,13 @@
     "debug": true
   },
   "database": {
-    "url": "sqlite:///./animesync.db"
+    "url": "sqlite:////tmp/animesync.db"
   },
   "jwt": {
     "secret_key": "change-this-in-production",
     "algorithm": "HS256",
-    "access_token_expire_minutes": 1440
+    "access_token_expire_minutes": 1440,
+    "refresh_token_expire_days": 7
   },
   "logging": {
     "level": "INFO",

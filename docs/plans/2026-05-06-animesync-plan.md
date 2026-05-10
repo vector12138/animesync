@@ -40,12 +40,12 @@
 
 ```
 ┌───────────────────┐     HTTP/JSON     ┌──────────────────────┐
-│   Web 前端客户端   │ ◄──────────────► │   FastAPI 服务端      │
+│   Flutter 客户端   │ ◄──────────────► │   FastAPI 服务端      │
 │                   │     JWT Auth       │                      │
 │  - 指定服务器地址   │                   │  - 用户认证 (JWT)    │
 │  - 账号登录        │                   │  - 番剧CRUD          │
 │  - 浏览/管理进度   │                   │  - 账号数据隔离      │
-│  - 纯前端HTML+JS   │                   │  - config.json 配置  │
+│  - Dart + Flutter │                   │  - config.json 配置  │
 └───────────────────┘                   └──────────┬───────────┘
                                                    │ SQLAlchemy
                                                    ▼
@@ -54,11 +54,11 @@
                                             └──────────────┘
 ```
 
-### 为什么选 Web 前端而不是 Flutter？
-- 用户当前环境没有 Flutter
-- Web 前端天然支持"指定服务器地址"（在登录页输入即可）
-- 开发迭代快，即时测试
-- 后续可再构建 Flutter App 对接同一 API
+### 为什么选择 Flutter？
+- 一套代码多端运行（Web、移动端），未来可扩展。
+- 开发体验优秀，热重载提升效率。
+- 原生支持指定服务器地址（配置界面）。
+- 性能优于纯 Web 方案，离线体验更佳。
 
 ## 四、API 设计
 
@@ -66,6 +66,7 @@
 - `POST /api/auth/register` — 注册
 - `POST /api/auth/login` — 登录，返回 JWT token
 - `GET /api/auth/me` — 获取当前用户信息
+- `POST /api/auth/refresh` — 刷新 access token（需提供有效的 refresh token）
 
 ### 番剧进度 (需认证)
 - `GET /api/progress` — 获取用户的所有番剧进度
@@ -107,12 +108,17 @@
 │   │       └── progress_service.py  # 业务逻辑
 │   ├── requirements.txt
 │   └── alembic/                 # (暂不用，SQLite直接sync)
-├── client/                      # Web 前端客户端
-│   ├── index.html
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       └── app.js
+├── client/                      # Flutter 客户端
+│   ├── lib/
+│   │   ├── main.dart
+│   │   ├── models/
+│   │   ├── providers/
+│   │   ├── services/
+│   │   ├── screens/
+│   │   ├── constants/
+│   │   └── utils/
+│   ├── pubspec.yaml
+│   └── ...
 ├── docker/
 │   ├── docker-compose.yml
 │   └── Dockerfile
@@ -263,6 +269,17 @@
 - 写入 `tests/test_progress.py`
 
 **验证：** `pytest tests/ -v` 全部通过
+
+### Step 8: 质量与体验提升 (已完成)
+
+**主要改进：**
+- ✅ Refresh Token 轮转，提升安全性
+- ✅ 前端错误统一提示与空状态优化
+- ✅ 操作即时反馈（成功/失败提示）
+- ✅ 自动刷新队列（避免并发请求重复刷新）
+- ✅ 常量统一管理（API 路径与 Header）
+- ✅ 更新 README 与运行指南
+- ✅ 扩展集成测试（覆盖 refresh 流程）
 
 ---
 

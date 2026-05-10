@@ -5,7 +5,7 @@ import logging.handlers
 import os
 import sys
 
-from app.config_loader import get_logging_config
+from app.config import get_logging_config
 
 _initialized = False
 

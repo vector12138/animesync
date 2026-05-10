@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+python-dotenv
+passlib[bcrypt]
+python-jose[cryptography]
+httpx
+watchfiles
+pytest
+pytest-asyncio
+requests
+pyjwt

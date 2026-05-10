@@ -23,3 +23,46 @@ pytest tests/ -v            # 运行测试
 - RESTful API 风格，名词复数路径
 - 所有番剧数据按 user_id 隔离
 - JWT 认证，token 通过 Authorization: Bearer 头传递
+
+## 项目经验
+
+### FastAPI 路由注册顺序
+API 路由必须在挂载 StaticFiles 之前注册，否则静态文件路由会遮蔽 API 路由。
+
+### BASE_DIR 计算
+从 app/ 出发通过 `parent.parent.parent` 定位到项目根目录。
+
+## 前端技术栈
+同时有 Web + 移动端时，统一使用 Flutter 在 client/ 目录开发。
+## 安装步骤
+
+### 后端
+
+```bash
+cd server
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp config.example.json config.json
+# 编辑配置文件
+uvicorn app.main:app --reload
+```
+
+### 前端 (Flutter)
+
+```bash
+cd client
+flutter pub get
+flutter run
+```
+
+### 测试
+
+```bash
+# 后端
+pytest tests/ -v
+python ../../test_e2e.py
+
+# 前端
+flutter test
+```
